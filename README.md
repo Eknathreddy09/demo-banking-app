@@ -9,27 +9,7 @@ powered by the bound `ai-models` service.
 
 Demo login: **kumara** / **Welcome11!**
 
-## 1. Run locally
-
-Requires Java 17+ and Docker. Maven is bundled via the wrapper (`./mvnw`) — no local Maven install needed.
-
-```bash
-docker compose up -d        # starts local Postgres + RabbitMQ
-./mvnw clean package
-java -jar target/imagine-lanka-bank.jar
-```
-
-Open http://localhost:8080. The AI chat widget will respond with a graceful fallback message locally since no
-real AI credentials are configured — that's expected until you bind the `ai-models` service on Cloud Foundry.
-
-To point the AI assistant at a real endpoint locally, export:
-```bash
-export SPRING_AI_OPENAI_API_KEY=sk-...
-export SPRING_AI_OPENAI_BASE_URL=https://your-genai-proxy
-export SPRING_AI_OPENAI_CHAT_OPTIONS_MODEL=your-model-name
-```
-
-## 2. Deploy to Tanzu Platform (Cloud Foundry)
+## Deploy to Tanzu Platform (Cloud Foundry)
 
 Build the jar first:
 ```bash
