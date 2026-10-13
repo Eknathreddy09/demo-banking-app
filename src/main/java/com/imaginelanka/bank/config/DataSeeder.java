@@ -44,7 +44,7 @@ public class DataSeeder implements CommandLineRunner {
     @Override
     @Transactional
     public void run(String... args) {
-        if (userRepository.findByUsername(demoUsername).isPresent()) {
+        if (userRepository.count() > 0) {
             return;
         }
 
