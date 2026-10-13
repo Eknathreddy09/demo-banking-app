@@ -1,0 +1,49 @@
+spring:
+  application:
+    name: imagine-lanka-bank
+
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/imaginelanka}
+    username: ${SPRING_DATASOURCE_USERNAME:bank}
+    password: ${SPRING_DATASOURCE_PASSWORD:bank}
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: false
+
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+
+  rabbitmq:
+    host: ${SPRING_RABBITMQ_HOST:localhost}
+    port: ${SPRING_RABBITMQ_PORT:5672}
+    username: ${SPRING_RABBITMQ_USERNAME:guest}
+    password: ${SPRING_RABBITMQ_PASSWORD:guest}
+
+  thymeleaf:
+    cache: false
+
+  ai:
+    openai:
+      api-key: ${SPRING_AI_OPENAI_API_KEY:unset}
+      base-url: ${SPRING_AI_OPENAI_BASE_URL:https://api.openai.com}
+      chat:
+        options:
+          model: ${SPRING_AI_OPENAI_CHAT_OPTIONS_MODEL:gpt-4o-mini}
+
+server:
+  port: ${PORT:8080}
+
+logging:
+  level:
+    com.imaginelanka.bank: INFO
+
+banking:
+  demo:
+    username: kumara
+    password: Welcome11!

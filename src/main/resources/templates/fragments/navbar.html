@@ -1,0 +1,44 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="navbar" class="sidebar">
+    <div class="brand">
+        <div class="brand-mark">ILB</div>
+        <div>
+            <div class="brand-name">Imagine Lanka</div>
+            <div class="brand-sub">Bank</div>
+        </div>
+    </div>
+
+    <nav class="nav-links">
+        <a th:href="@{/dashboard}" class="nav-link" th:classappend="${activePage == 'dashboard'} ? 'active' : ''">
+            <span class="nav-icon">&#9737;</span> Dashboard
+        </a>
+        <a th:href="@{/transfer}" class="nav-link" th:classappend="${activePage == 'transfer'} ? 'active' : ''">
+            <span class="nav-icon">&#8644;</span> Transfer
+        </a>
+        <a th:href="@{/billpay}" class="nav-link" th:classappend="${activePage == 'billpay'} ? 'active' : ''">
+            <span class="nav-icon">&#9998;</span> Bill Pay
+        </a>
+        <a th:href="@{/loans}" class="nav-link" th:classappend="${activePage == 'loans'} ? 'active' : ''">
+            <span class="nav-icon">&#127974;</span> Loans
+        </a>
+        <a th:href="@{/cards}" class="nav-link" th:classappend="${activePage == 'cards'} ? 'active' : ''">
+            <span class="nav-icon">&#9724;</span> Cards
+        </a>
+        <a th:href="@{/notifications}" class="nav-link" th:classappend="${activePage == 'notifications'} ? 'active' : ''">
+            <span class="nav-icon">&#128276;</span> Notifications
+        </a>
+    </nav>
+
+    <div class="sidebar-footer">
+        <div class="user-chip">
+            <div class="user-avatar" th:text="${#strings.substring(currentUserName ?: 'U', 0, 1)}">U</div>
+            <div>
+                <div class="user-name" th:text="${currentUserName ?: 'Customer'}">Customer</div>
+                <a class="logout-link" th:href="@{/logout}">Sign out</a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>Dashboard · Imagine Lanka Bank</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div class="app-shell">
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <main class="main-content">
+        <div class="page-header">
+            <div>
+                <h1 class="page-title">Welcome back, <span th:text="${currentUserName}">Customer</span></h1>
+                <p class="page-subtitle">Here's what's happening with your accounts today.</p>
+            </div>
+            <a th:href="@{/transfer}" class="btn btn-accent">+ New Transfer</a>
+        </div>
+
+        <div class="grid grid-2">
+            <div class="account-card" th:each="account : ${accounts}"
+                 th:classappend="${account.accountType.name() == 'SAVINGS'} ? 'type-savings' : 'type-checking'">
+                <div class="label" th:text="${account.accountType}">SAVINGS</div>
+                <div class="nickname" th:text="${account.nickname}">Primary Savings</div>
+                <div class="balance" th:text="${account.currency + ' ' + #numbers.formatDecimal(account.balance, 1, 'COMMA', 2, 'POINT')}">LKR 0.00</div>
+                <div class="account-number" th:text="${'•••• ' + #strings.substring(account.accountNumber, account.accountNumber.length() - 4, account.accountNumber.length())}">•••• 1234</div>
+            </div>
+        </div>
+
+        <div class="card" style="margin-top:24px;">
+            <h2 class="section-title">Recent Transactions</h2>
+            <table>
+                <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Description</th>
+                    <th>Type</th>
+                    <th style="text-align:right;">Amount</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="tx : ${transactions}">
+                    <td th:text="${#temporals.format(tx.createdAt, 'dd MMM, HH:mm')}">01 Jan</td>
+                    <td>
+                        <div th:text="${tx.description}">Description</div>
+                        <div style="color:var(--ink-400); font-size:12px;" th:text="${tx.counterparty}">Counterparty</div>
+                    </td>
+                    <td><span class="pill info" th:text="${tx.type}">TYPE</span></td>
+                    <td style="text-align:right;"
+                        th:class="${tx.amount.signum() >= 0} ? 'amount-positive' : 'amount-negative'"
+                        th:text="${(tx.amount.signum() >= 0 ? '+' : '') + #numbers.formatDecimal(tx.amount, 1, 'COMMA', 2, 'POINT')}">
+                        +0.00
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(transactions)}">
+                    <td colspan="4" class="empty-state">No transactions yet.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</div>
+
+<div th:replace="~{fragments/chat-widget :: widget}"></div>
+<script th:src="@{/js/chat.js}"></script>
+</body>
+</html>

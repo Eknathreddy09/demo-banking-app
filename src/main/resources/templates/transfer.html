@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>Transfer · Imagine Lanka Bank</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div class="app-shell">
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <main class="main-content">
+        <div class="page-header">
+            <div>
+                <h1 class="page-title">Transfer Money</h1>
+                <p class="page-subtitle">Move funds between your accounts or to another Imagine Lanka account.</p>
+            </div>
+        </div>
+
+        <div class="alert alert-success" th:if="${success}" th:text="${success}"></div>
+        <div class="alert alert-error" th:if="${error}" th:text="${error}"></div>
+
+        <div class="grid grid-2">
+            <div class="card">
+                <h2 class="section-title">New Transfer</h2>
+                <form th:action="@{/transfer}" method="post">
+                    <div class="form-group">
+                        <label for="fromAccountId">From account</label>
+                        <select id="fromAccountId" name="fromAccountId" required>
+                            <option th:each="account : ${accounts}" th:value="${account.id}"
+                                    th:text="${account.nickname + ' — ' + account.currency + ' ' + #numbers.formatDecimal(account.balance, 1, 'COMMA', 2, 'POINT')}">
+                                Account
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="toAccountNumber">To account number</label>
+                        <input type="text" id="toAccountNumber" name="toAccountNumber" placeholder="1000100067890" required/>
+                    </div>
+                    <div class="form-group">
+                        <label for="amount">Amount</label>
+                        <input type="number" id="amount" name="amount" step="0.01" min="0.01" placeholder="5000.00" required/>
+                    </div>
+                    <div class="form-group">
+                        <label for="note">Note (optional)</label>
+                        <input type="text" id="note" name="note" placeholder="Rent payment"/>
+                    </div>
+                    <button type="submit" class="btn btn-accent">Send Transfer</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <h2 class="section-title">Your Accounts</h2>
+                <p class="helper-text">Use these account numbers to transfer between your own accounts.</p>
+                <table>
+                    <tbody>
+                    <tr th:each="account : ${accounts}">
+                        <td>
+                            <div th:text="${account.nickname}">Nickname</div>
+                            <div style="color:var(--ink-400); font-size:12px;" th:text="${account.accountNumber}">0000</div>
+                        </td>
+                        <td style="text-align:right;" th:text="${account.currency + ' ' + #numbers.formatDecimal(account.balance, 1, 'COMMA', 2, 'POINT')}">0.00</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</div>
+
+<div th:replace="~{fragments/chat-widget :: widget}"></div>
+<script th:src="@{/js/chat.js}"></script>
+</body>
+</html>

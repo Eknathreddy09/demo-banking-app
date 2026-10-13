@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>Notifications · Imagine Lanka Bank</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div class="app-shell">
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <main class="main-content">
+        <div class="page-header">
+            <div>
+                <h1 class="page-title">Notifications</h1>
+                <p class="page-subtitle">Real-time alerts delivered asynchronously via Tanzu RabbitMQ.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div th:each="n : ${notifications}" style="padding:14px 0; border-bottom:1px solid var(--surface-100);">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <strong th:text="${n.title}">Title</strong>
+                    <span class="pill info" th:text="${n.eventType}">TYPE</span>
+                </div>
+                <p style="margin:6px 0 0; color:var(--ink-600); font-size:13.5px;" th:text="${n.message}">Message</p>
+                <p style="margin:4px 0 0; color:var(--ink-400); font-size:12px;" th:text="${#temporals.format(n.createdAt, 'dd MMM yyyy, HH:mm:ss')}">Date</p>
+            </div>
+            <div th:if="${#lists.isEmpty(notifications)}" class="empty-state">No notifications yet.</div>
+        </div>
+    </main>
+</div>
+
+<div th:replace="~{fragments/chat-widget :: widget}"></div>
+<script th:src="@{/js/chat.js}"></script>
+</body>
+</html>

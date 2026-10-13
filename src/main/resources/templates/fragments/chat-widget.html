@@ -1,0 +1,19 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="widget">
+    <button class="chat-toggle" id="chatToggle" type="button" title="Ask the AI Assistant">&#128172;</button>
+    <div class="chat-panel" id="chatPanel">
+        <div class="chat-header">
+            <span>&#10024;</span> Imagine Lanka AI Assistant
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="chat-msg bot">Hi! I'm your Imagine Lanka Bank assistant, powered by the Tanzu AI service. Ask me about your balances or recent transactions.</div>
+        </div>
+        <div class="chat-input-row">
+            <input type="text" id="chatInput" placeholder="Ask about your account..." autocomplete="off"/>
+            <button id="chatSend" type="button">&#10148;</button>
+        </div>
+    </div>
+</div>
+</body>
+</html>

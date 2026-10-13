@@ -1,0 +1,13 @@
+---
+applications:
+  - name: imagine-lanka-bank
+    memory: 1G
+    disk_quota: 1G
+    instances: 1
+    buildpacks:
+      - java_buildpack_offline
+    path: target/imagine-lanka-bank.jar
+    health-check-type: http
+    health-check-http-endpoint: /actuator/health
+    env:
+      JBP_CONFIG_OPEN_JDK_JRE: '{ jre: { version: 17.+ } }'

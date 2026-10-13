@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>Cards · Imagine Lanka Bank</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div class="app-shell">
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <main class="main-content">
+        <div class="page-header">
+            <div>
+                <h1 class="page-title">Cards</h1>
+                <p class="page-subtitle">Manage your debit and credit cards.</p>
+            </div>
+        </div>
+
+        <div class="alert alert-success" th:if="${success}" th:text="${success}"></div>
+        <div class="alert alert-error" th:if="${error}" th:text="${error}"></div>
+
+        <div class="grid grid-2">
+            <div th:each="card : ${cards}" class="payment-card"
+                 th:classappend="${card.status == 'BLOCKED'} ? 'blocked' : (${card.cardType == 'CREDIT'} ? 'credit' : '')">
+                <div>
+                    <div class="card-meta">
+                        <span th:text="${card.cardType}">DEBIT</span>
+                        <span th:text="${card.status}">ACTIVE</span>
+                    </div>
+                    <div class="card-number" style="margin-top:28px;" th:text="${card.maskedNumber}">•••• •••• •••• 0000</div>
+                </div>
+                <div class="card-meta">
+                    <span th:text="${card.account.nickname}">Account</span>
+                    <span th:text="${card.expiryMonth + '/' + card.expiryYear}">MM/YYYY</span>
+                </div>
+                <form th:if="${card.status != 'BLOCKED'}" th:action="@{'/cards/' + ${card.id} + '/block'}" method="post" style="margin-top:12px;">
+                    <button type="submit" class="btn btn-ghost btn-sm">Block Card</button>
+                </form>
+                <form th:if="${card.status == 'BLOCKED'}" th:action="@{'/cards/' + ${card.id} + '/unblock'}" method="post" style="margin-top:12px;">
+                    <button type="submit" class="btn btn-ghost btn-sm">Unblock Card</button>
+                </form>
+            </div>
+            <div th:if="${#lists.isEmpty(cards)}" class="empty-state">No cards yet.</div>
+        </div>
+
+        <div class="card" style="margin-top:24px; max-width:460px;">
+            <h2 class="section-title">Request a New Card</h2>
+            <form th:action="@{/cards/request}" method="post">
+                <div class="form-group">
+                    <label for="accountId">Link to account</label>
+                    <select id="accountId" name="accountId" required>
+                        <option th:each="account : ${accounts}" th:value="${account.id}" th:text="${account.nickname}">Account</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="cardType">Card type</label>
+                    <select id="cardType" name="cardType" required>
+                        <option value="DEBIT">Debit Card</option>
+                        <option value="CREDIT">Credit Card</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-accent">Request Card</button>
+            </form>
+        </div>
+    </main>
+</div>
+
+<div th:replace="~{fragments/chat-widget :: widget}"></div>
+<script th:src="@{/js/chat.js}"></script>
+</body>
+</html>
